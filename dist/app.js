@@ -330,6 +330,7 @@ function applyTripSettings(showMessage=true){
   document.querySelector('#mapDestinationLabel').textContent=destination;
   document.querySelector('#departureLabel').textContent=`${origin} · 07.06`;
   document.querySelector('#arrivalLabel').textContent=`${destination} · 07.06 + ${daysValue-1}天`;
+  document.querySelector('#weatherArrivalTip').textContent=`${destination} · 预计第 ${daysValue} 天抵达`;
   const totalKm=currentTrip.distanceKm;
   const midIndex=Math.min(days.length-1,Math.max(0,Math.floor(days.length/2)-1));
   const chargeStops=currentVehicleProfile.key==='fuel'?0:Math.max(1,Math.round(totalKm/450));
