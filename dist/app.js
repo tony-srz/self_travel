@@ -169,6 +169,46 @@ function renderDetail(){
   if(window.lucide) lucide.createIcons();
 }
 
+function mapCityPoint(city,index,total){
+  const span=Math.max(1,total-1);
+  let hash=0;
+  for(let i=0;i<(city||'').length;i++) hash=(hash*31+city.charCodeAt(i))%997;
+  const progress=index/span;
+  const wave=((hash%61)-30)*(index===0||index===total-1?0.22:0.7);
+  return {x:70+560*progress,y:385-300*progress+wave};
+}
+function renderRouteMap(){
+  const map=document.querySelector('.route-map');
+  const path=document.querySelector('.route-path');
+  const shadow=document.querySelector('.route-shadow');
+  const stops=document.querySelector('#routeStops');
+  const labels=document.querySelector('#mapStops');
+  if(!map||!path||!shadow||!stops||!labels||!days.length) return;
+  const origin=document.querySelector('#originInput')?.value.trim() || defaultTrip.origin;
+  const rawStops=[{city:origin,day:0},...days.map(day=>({city:day.city,day:Number(day.no)}))];
+  const routeStops=rawStops.filter((stop,index)=>index===0||stop.city!==rawStops[index-1].city);
+  const points=routeStops.map((stop,index)=>({...stop,...mapCityPoint(stop.city,index,routeStops.length)}));
+  const pathData=points.reduce((d,point,index)=>{
+    if(index===0) return `M ${point.x.toFixed(1)} ${point.y.toFixed(1)}`;
+    const previous=points[index-1];
+    const midX=(previous.x+point.x)/2;
+    return `${d} Q ${midX.toFixed(1)} ${previous.y.toFixed(1)} ${point.x.toFixed(1)} ${point.y.toFixed(1)}`;
+  },'');
+  path.setAttribute('d',pathData);
+  shadow.setAttribute('d',pathData);
+  stops.innerHTML=points.map((point,index)=>`<circle class="route-stop ${index===0?'stop-a':''} ${index===points.length-1?'stop-end':''}" cx="${point.x.toFixed(1)}" cy="${point.y.toFixed(1)}" r="${index===0||index===points.length-1?6:4}" />`).join('');
+  const labelIndexes=new Set();
+  const labelLimit=Math.min(10,points.length);
+  for(let i=1;i<labelLimit-1;i++) labelIndexes.add(Math.round(i*(points.length-1)/(labelLimit-1)));
+  labels.innerHTML=[...labelIndexes].sort((a,b)=>a-b).map(index=>{const point=points[index];return `<span class="map-label map-stop-label" style="left:${(point.x/700*100).toFixed(2)}%;top:${(point.y/470*100).toFixed(2)}%">${point.city}</span>`}).join('');
+  const first=points[0],last=points[points.length-1];
+  const originLabel=document.querySelector('#mapOriginLabel');
+  const destinationLabel=document.querySelector('#mapDestinationLabel');
+  if(originLabel){originLabel.textContent=first.city;originLabel.style.left=`${(first.x/700*100).toFixed(2)}%`;originLabel.style.bottom='auto';originLabel.style.top=`${(first.y/470*100).toFixed(2)}%`;}
+  if(destinationLabel){destinationLabel.textContent=last.city;destinationLabel.style.right='auto';destinationLabel.style.left=`${(last.x/700*100).toFixed(2)}%`;destinationLabel.style.top=`${(last.y/470*100).toFixed(2)}%`;}
+  map.setAttribute('aria-label',`${first.city}到${last.city}的${points.length-1}段路线轨迹`);
+}
+
 function showToast(message){toast.textContent=message;toast.classList.add('show');clearTimeout(window.toastTimer);window.toastTimer=setTimeout(()=>toast.classList.remove('show'),2200)}
 
 document.querySelectorAll('.filter-button').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('.filter-button').forEach(x=>x.classList.remove('active'));btn.classList.add('active');const f=btn.dataset.filter;document.querySelectorAll('[data-category]').forEach(card=>{card.style.opacity=f==='all'||card.dataset.category===f?'1':'.35'});showToast(f==='all'?'已显示全部行程':`已聚焦${btn.textContent.trim()}安排`)}));
@@ -240,6 +280,13 @@ function generatePoeticName(trip,profile){
   const travel=/儿童|小孩|孩子|宝宝|亲子/.test(trip.travelers)?'童行':/老人|长辈|父母/.test(trip.travelers)?'携长辈':/宠物|狗|猫/.test(trip.travelers)?'伴宠':'同游';
   return `${originShort}${routeVerb}${destinationShort} · ${motion}${travel}`;
 }
+function generateTripTag(trip,profile){
+  const origin=trip.origin.replace(/市|省|自治区|特别行政区/g,'');
+  const destination=trip.destination.replace(/市|省|自治区|特别行政区/g,'');
+  const group=/儿童|小孩|孩子|宝宝|亲子/.test(trip.travelers)?'家庭远征':/老人|长辈|父母|爷爷|奶奶/.test(trip.travelers)?'全家慢旅':/宠物|狗|猫|毛孩子/.test(trip.travelers)?'携宠远行':'同行远征';
+  const region=/赛里木湖|喀纳斯|乌鲁木齐|新疆/.test(destination)?'西北线':/拉萨|西藏/.test(destination)?'高原线':/桂林|阳朔|凤凰|张家界|贵阳|重庆|成都/.test(destination)?'西南线':`${destination}线`;
+  return `${group} · ${origin}→${destination} · ${profile.label}${region}`;
+}
 function applyTripSettings(showMessage=true){
   const origin=document.querySelector('#originInput').value.trim() || defaultTrip.origin;
   const destination=document.querySelector('#destinationInput').value.trim() || defaultTrip.destination;
@@ -254,6 +301,7 @@ function applyTripSettings(showMessage=true){
   syncVehicleControls(currentVehicleProfile);
   const poeticName=generatePoeticName(currentTrip,currentVehicleProfile);
   const brandName=`${origin} → ${destination} · ${vehicle}`;
+  document.querySelector('#tripTag').textContent=generateTripTag(currentTrip,currentVehicleProfile);
   document.querySelector('#travelerSummary').textContent=travelers;
   document.querySelector('#vehicleSummary').textContent=vehicle;
   document.querySelector('#vehicleTypeSummary').textContent=currentVehicleProfile.label;
@@ -288,7 +336,7 @@ function applyTripSettings(showMessage=true){
   document.querySelector('#costDaysSummary').textContent=`${daysValue} 天 ${Math.max(1,daysValue-1)} 晚`;
   updateTravelerExperience(travelers);
   selectedDay=0;
-  renderNav();renderDetail();updateCosts();
+  renderNav();renderDetail();renderRouteMap();updateCosts();
   if(showMessage) showToast(`已按${currentVehicleProfile.label}和${daysValue}天更新旅程`);
 }
 function hydrateTripSettings(){
