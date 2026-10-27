@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#11251f" />
+    <meta name="description" content="深圳出发，驾驶电车去赛里木湖的家庭自驾路线规划。" />
+    <title>丝路电车 · 赛里木湖自驾规划</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Noto+Sans+SC:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <div class="brand-lockup">
+          <div class="brand-mark">S</div>
+          <div>
+            <p class="eyebrow" id="brandKicker">ROADBOOK / 2026</p>
+            <h1 id="brandTitle">丝路电车</h1>
+          </div>
+        </div>
+        <div class="topbar-actions">
+          <div class="trip-meta"><i data-lucide="users" aria-hidden="true"></i><span id="travelerSummary">1 家 3 口</span></div>
+          <div class="trip-meta"><i data-lucide="battery-charging" aria-hidden="true"></i><span id="vehicleSummary">纯电 SUV</span><small class="vehicle-type-summary" id="vehicleTypeSummary">纯电</small></div>
+          <button class="edit-trip-button" id="editTripBtn"><i data-lucide="sliders-horizontal"></i><span>编辑旅程</span></button><button class="icon-button" title="分享路线" aria-label="分享路线" id="shareBtn"><i data-lucide="share-2"></i></button>
+          <button class="avatar" aria-label="旅伴头像">3</button>
+        </div>
+      </header>
+
+      <section class="trip-settings" id="tripSettings" aria-label="编辑旅程信息">
+        <div class="settings-copy"><p class="eyebrow">TRIP SETUP</p><h2>把这趟旅程改成你的。</h2><p>输入后会同步更新路线摘要和预算说明，车辆能源类型按车名自动识别，原有每日节点仍保留作参考。</p></div>
+        <div class="settings-fields">
+          <label><span>出发点</span><input id="originInput" type="text" value="深圳" placeholder="例如：深圳" /></label>
+          <label><span>目的地</span><input id="destinationInput" type="text" value="赛里木湖" placeholder="例如：赛里木湖" /></label>
+          <label><span>出行车辆</span><input id="vehicleInput" type="text" value="纯电 SUV" placeholder="例如：比亚迪唐 EV" /></label>
+          <label><span>出行人员</span><input id="travelersInput" type="text" value="1 家 3 口" placeholder="例如：2 位成人 + 1 名儿童" /></label>
+          <label><span>旅行天数</span><input id="daysInput" type="number" min="3" max="30" step="1" value="16" placeholder="例如：12" /></label>
+          <div class="settings-actions"><button class="primary-button" id="applyTripBtn"><i data-lucide="check"></i>应用设置</button><button class="text-button" id="resetTripBtn">恢复默认</button></div>
+        </div>
+      </section>
+
+      <main>
+        <section class="hero-grid">
+          <div class="hero-copy">
+            <p class="eyebrow accent">家庭远征 · 中国西北线</p>
+            <h2>从 <span id="originHero">深圳</span> 出发，<br /><span>去 <span id="destinationHero">赛里木湖</span> 过夏天。</span></h2>
+            <p class="hero-lede" id="heroIntroText">一条给电车家庭设计的长线自驾。每天留出充电、午休和孩子能走完的景点时间，把 5,500 公里的路拆成有景点、也有余量的 <span id="heroDaysText">16 天</span>。</p>
+            <div class="hero-actions">
+              <a class="primary-button" href="#itinerary"><i data-lucide="map"></i>查看每日路线</a>
+              <button class="secondary-button" id="printBtn"><i data-lucide="file-down"></i>保存行程单</button>
+            </div>
+            <div class="hero-note"><span class="pulse-dot"></span><span id="heroNoteText">路线按 7 月长日照设计 · 住宿建议可替换</span></div>
+          </div>
+          <div class="hero-snapshot">
+            <div class="snapshot-head">
+              <div>
+                <p class="eyebrow">TRIP SNAPSHOT</p>
+                <h3><span id="routeTitleOrigin">深圳</span> <span>→</span> <span id="routeTitleDestination">赛里木湖</span></h3>
+              </div>
+              <span class="status-pill"><span class="status-dot"></span>已规划</span>
+            </div>
+            <div class="route-strip" aria-label="路线节点概览">
+              <div class="route-node start"><span class="node-dot"></span><div><strong id="startLabel">深圳</strong><small>DAY 01</small></div></div>
+              <div class="route-segment"><span id="routeDistanceLabel">5,500 km</span></div>
+              <div class="route-node mid"><span class="node-dot"></span><div><strong id="routeMidLabel">成都</strong><small id="routeMidDay">DAY 06</small></div></div>
+              <div class="route-segment"><span id="routeNightsLabel">10 晚</span></div>
+              <div class="route-node end"><span class="node-dot"></span><div><strong id="destinationLabel">赛里木湖</strong><small id="destinationDayLabel">DAY 16</small></div></div>
+            </div>
+            <div class="snapshot-footer">
+              <div><span class="metric-value" id="tripDaysMetric">16</span><span class="metric-label">天</span></div>
+              <div><span class="metric-value" id="chargeStopMetric">10</span><span class="metric-label">次补能</span></div>
+              <div><span class="metric-value">300–500</span><span class="metric-label">km / 天</span></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="control-row" aria-label="路线筛选">
+          <div class="section-intro"><p class="eyebrow">THE ROUTE / 01</p><h2>把长途拆成好日子</h2></div>
+          <div class="filter-group" role="tablist" aria-label="路线内容筛选">
+            <button class="filter-button active" data-filter="all" role="tab">全部</button>
+            <button class="filter-button" data-filter="charge" role="tab"><i data-lucide="zap"></i>补能</button>
+            <button class="filter-button" data-filter="stay" role="tab"><i data-lucide="bed-double"></i>食宿</button>
+            <button class="filter-button" data-filter="spot" role="tab"><i data-lucide="mountain"></i>景点</button>
+          </div>
+        </section>
+
+        <section class="overview-layout">
+          <div class="route-board">
+            <div class="board-topline"><span id="routeStationsLabel">多看四站 · 16 站</span><span class="mono">UPDATED 07.02</span></div>
+            <div class="route-map" aria-label="路线示意图">
+              <div class="map-grid"></div>
+              <div class="map-label label-shenzhen" id="mapOriginLabel">深圳</div>
+              <div class="map-label label-guilin">桂林</div>
+              <div class="map-label label-fenghuang">凤凰古城</div>
+              <div class="map-label label-chengdu">成都</div>
+              <div class="map-label label-guiyang">贵阳</div>
+              <div class="map-label label-tianshui">天水</div>
+              <div class="map-label label-zhangye">张掖</div>
+              <div class="map-label label-hami">哈密</div>
+              <div class="map-label label-urumqi">乌鲁木齐</div>
+              <div class="map-label label-sailimu" id="mapDestinationLabel">赛里木湖</div>
+              <svg class="route-svg" viewBox="0 0 700 470" preserveAspectRatio="none" role="img" aria-label="深圳到赛里木湖路线轨迹">
+                <path class="route-shadow" d="M94 384 C170 330 154 295 222 300 C283 306 279 261 337 254 C404 245 391 207 456 208 C504 208 491 150 540 140 C588 130 579 89 633 66" />
+                <path class="route-path" d="M94 384 C170 330 154 295 222 300 C283 306 279 261 337 254 C404 245 391 207 456 208 C504 208 491 150 540 140 C588 130 579 89 633 66" />
+                <circle class="route-stop stop-a" cx="94" cy="384" r="8"/><circle class="route-stop" cx="170" cy="330" r="6"/><circle class="route-stop" cx="222" cy="300" r="6"/><circle class="route-stop" cx="337" cy="254" r="6"/><circle class="route-stop" cx="456" cy="208" r="6"/><circle class="route-stop" cx="540" cy="140" r="6"/><circle class="route-stop stop-end" cx="633" cy="66" r="8"/>
+              </svg>
+              <div class="map-compass"><i data-lucide="navigation"></i><span>N</span></div>
+              <div class="map-scale mono">500 km</div>
+              <div class="map-footer"><span><span class="legend-line"></span>驾车主线</span><span><span class="legend-dot"></span>建议停留</span></div>
+            </div>
+            <div class="route-board-footer">
+              <div><span class="footer-label">出发</span><strong id="departureLabel">深圳 · 07.06</strong></div>
+              <div class="footer-arrow"><i data-lucide="arrow-right"></i></div>
+              <div><span class="footer-label">抵达</span><strong id="arrivalLabel">赛里木湖 · 07.21</strong></div>
+            </div>
+          </div>
+
+          <aside class="side-stack">
+            <div class="insight-card charge-card" data-category="charge">
+              <div class="card-icon teal"><i data-lucide="battery-charging"></i></div>
+              <div><p class="eyebrow">CHARGE RHYTHM</p><h3>把电量留给风景</h3><p>推荐 20%–80% 区间补能，单日安排 1–2 个服务区快充，午餐顺便完成。</p></div>
+              <span class="card-index">01</span>
+            </div>
+            <div class="insight-card stay-card" data-category="stay">
+              <div class="card-icon orange"><i data-lucide="bed-double"></i></div>
+              <div><p class="eyebrow">FAMILY PACE</p><h3>连续两晚住得好</h3><p>阳朔、成都/都江堰、乌鲁木齐各留出慢游时间，让孩子有完整的休息日。</p></div>
+              <span class="card-index">02</span>
+            </div>
+            <div class="weather-card" data-category="spot">
+              <div class="weather-main"><i data-lucide="sun"></i><div><strong>晴 · 22°C</strong><span>赛里木湖 · 预计抵达日</span></div></div>
+              <div class="weather-tags"><span>湖边风大</span><span>带外套</span></div>
+            </div>
+          </aside>
+        </section>
+
+        <section class="cost-section" id="cost">
+          <div class="cost-heading"><div><p class="eyebrow">LIVE COST / 02</p><h2>即时开销统计</h2></div><div class="cost-heading-right"><span class="cost-profile" id="vehicleProfileLabel">纯电估算</span><div class="cost-updated"><span class="status-dot"></span>随参数即时更新</div></div></div>
+          <div class="cost-layout">
+            <div class="cost-total-card">
+              <p class="eyebrow">ESTIMATED TOTAL</p>
+              <div class="cost-total" id="costTotal">¥22,600</div>
+              <p class="cost-subline">按 <span id="costTravelerSummary">1 家 3 口</span>、<span id="costDaysSummary">16 天 15 晚</span>、5,500 km 估算</p>
+              <div class="cost-per-day"><span>平均每天</span><strong id="costPerDay">¥1,413</strong></div>
+              <div class="cost-note"><i data-lucide="info"></i><span>这是路线预算，不含购物和临时升级；住宿房态与电价会让实际金额浮动。</span></div>
+            </div>
+            <div class="cost-controls" aria-label="预算参数">
+              <div class="cost-control"><label for="energyRate"><span id="energyRateLabel">平均电耗</span> <strong><span id="energyRateValue">18</span> <span id="energyUnit">kWh/100km</span></strong></label><input id="energyRate" type="range" min="14" max="24" step="1" value="18" /></div>
+              <div class="cost-control"><label for="electricPrice"><span id="electricPriceLabel">平均电价</span> <strong>¥<span id="electricPriceValue">1.05</span><span id="electricUnit">/kWh</span></strong></label><input id="electricPrice" type="range" min="0.65" max="1.55" step="0.05" value="1.05" /></div>
+              <div class="cost-control"><label for="hotelPrice">住宿均价 <strong>¥<span id="hotelPriceValue">680</span>/晚</strong></label><input id="hotelPrice" type="range" min="380" max="1200" step="20" value="680" /></div>
+              <div class="cost-control fuel-share-control" id="fuelShareControl"><label for="fuelShare">燃油里程占比 <strong><span id="fuelShareValue">35</span>%</strong></label><input id="fuelShare" type="range" min="10" max="90" step="5" value="35" /></div>
+              <div class="cost-control"><label for="mealPrice">餐饮预算 <strong>¥<span id="mealPriceValue">360</span>/天</strong></label><input id="mealPrice" type="range" min="220" max="700" step="20" value="360" /></div>
+            </div>
+            <div class="cost-breakdown" id="costBreakdown"></div>
+          </div>
+        </section>
+
+        <section class="itinerary-section" id="itinerary">
+          <div class="itinerary-heading"><div><p class="eyebrow">DAY BY DAY / 03</p><h2>每日行程</h2></div><div class="heading-meta"><span>建议出发 <strong>08:00</strong></span><span>晚间抵达 <strong>18:30 前</strong></span></div></div>
+          <div class="itinerary-layout">
+            <nav class="day-nav" aria-label="选择日期" id="dayNav"></nav>
+            <div class="day-detail" id="dayDetail" aria-live="polite"></div>
+          </div>
+        </section>
+
+        <section class="packing-section">
+          <div class="packing-intro"><p class="eyebrow">TRAVEL NOTES / 04</p><h2>出发前，<br />把这些放进车里。</h2><p id="packingIntroText">给一家三口的西北长途小抄，按“路上舒服”而不是“塞得最多”整理。</p><button class="secondary-button" id="checklistBtn"><i data-lucide="check-circle-2"></i>打开清单 <span id="checklistCount">06</span></button></div>
+          <div class="packing-list" id="packingList"></div>
+        </section>
+      </main>
+      <footer class="footer"><span id="footerBrand">丝路电车 · A family roadbook for the long way west.</span><span class="mono">DATA / ROUTE BASELINE · 2026.07</span></footer>
+    </div>
+    <div class="toast" id="toast" role="status"></div>
+    <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
+    <script src="./app.js"></script>
+  </body>
+</html>
