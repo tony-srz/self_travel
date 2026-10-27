@@ -229,18 +229,28 @@ function inferVehicleProfile(name){
   if(/纯电|电车|ev|electric|特斯拉|model3|modely|蔚来|小鹏|极氪|阿维塔|小米su7|智己|海豹|汉ev|id4|id\.4/i.test(t)) return {key:'ev',label:'纯电',rate:18,price:1.05};
   return {key:'fuel',label:'纯油',rate:8.5,price:8.2};
 }
-function travelerProfile(text){
+function travelerProfile(text,trip={}){
   const t=(text||'').toLowerCase();
+  const routeLabel=`${trip.origin||'出发地'}到${trip.destination||'目的地'}的自驾路线`;
   const hasChild=/儿童|小孩|孩子|宝宝|婴儿|亲子/.test(t);
   const hasElder=/老人|长辈|父母|爷爷|奶奶|长者/.test(t);
   const hasPet=/宠物|狗|猫|毛孩子/.test(t);
-  if(hasPet) return {intro:'这是一条带宠物一起慢慢走的西北路线。每天保留补水、放风和中途休息，景点优先选择能轻松到达的户外点。',note:'宠物同行模式 · 住宿请逐家确认宠物政策',packingIntro:'给带宠物出行的同行者准备的小抄，先把饮水、休息和住宿政策确认好。',items:[['宠物饮水碗 & 牵引绳','服务区放风时保持可控，准备一条备用牵引绳'],['车载清洁包 & 毛毯','长途换乘和住宿都更容易保持车内整洁'],['宠物疫苗本 & 常用药','提前整理成一个随手可取的小包'],['保温水壶 & 车载冰箱','人和宠物都能在路上及时补水'] ]};
-  if(hasElder) return {intro:'这是一条给多人家庭设计的西北路线。每天把长途段拆开，留出午休、少换酒店和就近用餐的缓冲。',note:'长辈同行模式 · 住宿优先选电梯、停车和早餐便利',packingIntro:'给长辈同行准备的小抄，把舒适和取用方便排在行李数量之前。',items:[['常用药 & 就医信息','按天分装，随身保留一份用药清单'],['腰靠 & 轻薄毯','长途座椅支撑和昼夜温差都要照顾'],['保温水壶 & 软底鞋','服务区短休更舒服，景点步行更稳'],['酒店电梯 & 早餐确认','下单前把楼层、早餐和停车问清楚'] ]};
-  if(hasChild) return {intro:'这是一条给家庭小队设计的西北路线。每天保留午休、零食和孩子能走完的景点时间，把“赶到”留给导航，把“玩好”留给家人。',note:'儿童同行模式 · 每 2–3 小时安排一次下车活动',packingIntro:'给有孩子同行的家庭小抄，按“路上舒服”而不是“塞得最多”整理。',items:[['儿童耳罩 & 颈枕','长途段安静睡一觉，比多逛一个景点更重要'],['零食盒 & 保温水壶','把服务区补给变成孩子愿意配合的小仪式'],['换洗衣物 & 湿巾','沙漠、湖边和车上都能快速应对突发状况'],['亲子房与早餐确认','优先选有家庭房、停车和早餐的酒店'] ]};
-  return {intro:'这是一条适合多人轮换驾驶的西北路线。每天控制在可预期的驾驶时长，沿途留出换手、用餐和临时停留的空间。',note:'多人同行模式 · 建议每 2 小时轮换一次驾驶',packingIntro:'给多人同行准备的小抄，把证件、轮换驾驶和公共补给放在最容易取到的位置。',items:[['证件袋 & 电子备份','驾驶证、行驶证、保险和订房信息统一收纳'],['司机轮换表','提前标记每段驾驶人和休息点，避免疲劳驾驶'],['保温水壶 & 车载冰箱','多人长途补水和简单加餐更省心'],['遮阳帘 & 车载充电线','让不同座位的人都能舒服使用设备'] ]};
+  if(hasPet) return {intro:`这是一条带宠物一起慢慢走的${routeLabel}。每天保留补水、放风和中途休息，景点优先选择能轻松到达的户外点。`,note:'宠物同行模式 · 住宿请逐家确认宠物政策',packingIntro:'给带宠物出行的同行者准备的小抄，先把饮水、休息和住宿政策确认好。',items:[['宠物饮水碗 & 牵引绳','服务区放风时保持可控，准备一条备用牵引绳'],['车载清洁包 & 毛毯','长途换乘和住宿都更容易保持车内整洁'],['宠物疫苗本 & 常用药','提前整理成一个随手可取的小包'],['保温水壶 & 车载冰箱','人和宠物都能在路上及时补水'] ]};
+  if(hasElder) return {intro:`这是一条给多人家庭设计的${routeLabel}。每天把长途段拆开，留出午休、少换酒店和就近用餐的缓冲。`,note:'长辈同行模式 · 住宿优先选电梯、停车和早餐便利',packingIntro:'给长辈同行准备的小抄，把舒适和取用方便排在行李数量之前。',items:[['常用药 & 就医信息','按天分装，随身保留一份用药清单'],['腰靠 & 轻薄毯','长途座椅支撑和昼夜温差都要照顾'],['保温水壶 & 软底鞋','服务区短休更舒服，景点步行更稳'],['酒店电梯 & 早餐确认','下单前把楼层、早餐和停车问清楚'] ]};
+  if(hasChild) return {intro:`这是一条给家庭小队设计的${routeLabel}。每天保留午休、零食和孩子能走完的景点时间，把“赶到”留给导航，把“玩好”留给家人。`,note:'儿童同行模式 · 每 2–3 小时安排一次下车活动',packingIntro:'给有孩子同行的家庭小抄，按“路上舒服”而不是“塞得最多”整理。',items:[['儿童耳罩 & 颈枕','长途段安静睡一觉，比多逛一个景点更重要'],['零食盒 & 保温水壶','把服务区补给变成孩子愿意配合的小仪式'],['换洗衣物 & 湿巾','沙漠、湖边和车上都能快速应对突发状况'],['亲子房与早餐确认','优先选有家庭房、停车和早餐的酒店'] ]};
+  return {intro:`这是一条适合多人轮换驾驶的${routeLabel}。每天控制在可预期的驾驶时长，沿途留出换手、用餐和临时停留的空间。`,note:'多人同行模式 · 建议每 2 小时轮换一次驾驶',packingIntro:'给多人同行准备的小抄，把证件、轮换驾驶和公共补给放在最容易取到的位置。',items:[['证件袋 & 电子备份','驾驶证、行驶证、保险和订房信息统一收纳'],['司机轮换表','提前标记每段驾驶人和休息点，避免疲劳驾驶'],['保温水壶 & 车载冰箱','多人长途补水和简单加餐更省心'],['遮阳帘 & 车载充电线','让不同座位的人都能舒服使用设备'] ]};
 }
-function updateTravelerExperience(travelers){
-  const profile=travelerProfile(travelers);
+function updateRoutePaceTip(trip){
+  const slowCities=[...new Set(days.filter(day=>day.distanceKm<=120).map(day=>day.city))];
+  const anchors=(slowCities.length?slowCities:[...new Set(days.slice().sort((a,b)=>a.distanceKm-b.distanceKm).slice(0,2).map(day=>day.city))]).slice(0,3);
+  const title=anchors.length?`${anchors.join('、')}留出慢游`:'沿途留出慢游';
+  const hasChild=/儿童|小孩|孩子|宝宝|婴儿|亲子/.test(trip.travelers||'');
+  const text=anchors.length?`${anchors.join('、')}安排慢游或连住${hasChild?'，让孩子有完整的休息日':'，不把每天的行程塞满'}。`:`根据${trip.origin}到${trip.destination}的里程安排休息日，保留临时停留的余量。`;
+  document.querySelector('#paceTipTitle').textContent=title;
+  document.querySelector('#paceTipText').textContent=text;
+}
+function updateTravelerExperience(travelers,trip=currentTrip){
+  const profile=travelerProfile(travelers,trip);
   const intro=document.querySelector('#heroIntroText');
   intro.innerHTML=`${profile.intro} 把 ${Math.round(currentTrip.distanceKm || 5500).toLocaleString('zh-CN')} 公里的路拆成有景点、也有余量的 <span id="heroDaysText">${currentTrip.days || 16} 天</span>。`;
   document.querySelector('#heroNoteText').textContent=profile.note;
@@ -334,7 +344,8 @@ function applyTripSettings(showMessage=true){
   document.querySelector('#heroDaysText').textContent=`${daysValue} 天`;
   document.querySelector('#costTravelerSummary').textContent=travelers;
   document.querySelector('#costDaysSummary').textContent=`${daysValue} 天 ${Math.max(1,daysValue-1)} 晚`;
-  updateTravelerExperience(travelers);
+  updateTravelerExperience(travelers,currentTrip);
+  updateRoutePaceTip(currentTrip);
   selectedDay=0;
   renderNav();renderDetail();renderRouteMap();updateCosts();
   if(showMessage) showToast(`已按${currentVehicleProfile.label}和${daysValue}天更新旅程`);
