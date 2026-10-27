@@ -44,7 +44,7 @@
       <main>
         <section class="hero-grid">
           <div class="hero-copy">
-            <p class="eyebrow accent">家庭远征 · 中国西北线</p>
+            <p class="eyebrow accent" id="tripTag">家庭远征 · 中国西北线</p>
             <h2>从 <span id="originHero">深圳</span> 出发，<br /><span>去 <span id="destinationHero">赛里木湖</span> 过夏天。</span></h2>
             <p class="hero-lede" id="heroIntroText">一条给电车家庭设计的长线自驾。每天留出充电、午休和孩子能走完的景点时间，把 5,500 公里的路拆成有景点、也有余量的 <span id="heroDaysText">16 天</span>。</p>
             <div class="hero-actions">
@@ -92,19 +92,12 @@
             <div class="route-map" aria-label="路线示意图">
               <div class="map-grid"></div>
               <div class="map-label label-shenzhen" id="mapOriginLabel">深圳</div>
-              <div class="map-label label-guilin">桂林</div>
-              <div class="map-label label-fenghuang">凤凰古城</div>
-              <div class="map-label label-chengdu">成都</div>
-              <div class="map-label label-guiyang">贵阳</div>
-              <div class="map-label label-tianshui">天水</div>
-              <div class="map-label label-zhangye">张掖</div>
-              <div class="map-label label-hami">哈密</div>
-              <div class="map-label label-urumqi">乌鲁木齐</div>
+              <div class="map-stops" id="mapStops" aria-live="polite"></div>
               <div class="map-label label-sailimu" id="mapDestinationLabel">赛里木湖</div>
               <svg class="route-svg" viewBox="0 0 700 470" preserveAspectRatio="none" role="img" aria-label="深圳到赛里木湖路线轨迹">
                 <path class="route-shadow" d="M94 384 C170 330 154 295 222 300 C283 306 279 261 337 254 C404 245 391 207 456 208 C504 208 491 150 540 140 C588 130 579 89 633 66" />
                 <path class="route-path" d="M94 384 C170 330 154 295 222 300 C283 306 279 261 337 254 C404 245 391 207 456 208 C504 208 491 150 540 140 C588 130 579 89 633 66" />
-                <circle class="route-stop stop-a" cx="94" cy="384" r="8"/><circle class="route-stop" cx="170" cy="330" r="6"/><circle class="route-stop" cx="222" cy="300" r="6"/><circle class="route-stop" cx="337" cy="254" r="6"/><circle class="route-stop" cx="456" cy="208" r="6"/><circle class="route-stop" cx="540" cy="140" r="6"/><circle class="route-stop stop-end" cx="633" cy="66" r="8"/>
+                <g id="routeStops" aria-hidden="true"><circle class="route-stop stop-a" cx="94" cy="384" r="8"/><circle class="route-stop" cx="170" cy="330" r="6"/><circle class="route-stop" cx="222" cy="300" r="6"/><circle class="route-stop" cx="337" cy="254" r="6"/><circle class="route-stop" cx="456" cy="208" r="6"/><circle class="route-stop" cx="540" cy="140" r="6"/><circle class="route-stop stop-end" cx="633" cy="66" r="8"/></g>
               </svg>
               <div class="map-compass"><i data-lucide="navigation"></i><span>N</span></div>
               <div class="map-scale mono">500 km</div>
